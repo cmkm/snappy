@@ -1,0 +1,77 @@
+/*
+  ___                          
+ / __|_ _  __ _ _ __ _ __ _  _ 
+ \__ \ ' \/ _` | '_ \ '_ \ || |
+ |___/_||_\__,_| .__/ .__/\_, |
+               |_|  |_|   |__/ 
+
+        CSCI 3321 - Dr. Su
+             Fall 2014
+
+        Cieara Meador
+        James Liljenquist
+        Shane Farrar
+
+*/ 
+
+/*  PALETTE
+ *  dark green:  #779922
+ *  med + green: #88cc44
+ *  med + red:   #99cc55
+ *  med + blue:  #99cc66
+ *  white:       #eeeedd
+ *
+ */
+
+/*  WEBFONTS */
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,700);
+
+body {
+    font-family: "Raleway", sans-serif;
+    font-size: 18px;
+    margin: 0 auto;
+    background-color: #eeeedd;
+}
+
+a {
+    text-decoration: none;
+}
+
+.topnav {
+    background-color: #779922;
+    color: #eee;
+    padding: 0.3em;
+}
+
+.topsubnav {
+    background-color: #b3cd98;
+    font-size: 0.9em;
+    color: #161d0e;
+    padding: 0.45em;
+}
+
+    .topsubnav ul,
+    footer ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .topsubnav ul li, 
+    footer ul li {
+        display: inline;
+        padding: 0.2em;
+    }
+
+.brand {
+    font-weight: normal;
+    font-size: 2em;
+    color: #fff;
+    margin: 0;
+}
+
+footer {
+    background-color: #555;
+    color: #eeeedd;
+    padding: 0.45em;
+}
