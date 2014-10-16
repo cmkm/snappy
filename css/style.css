@@ -33,6 +33,22 @@ body {
     background-color: #eeeedd;
 }
 
+@media (max-width: 800px) {
+    
+    body {
+        font-size: 16px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    body {
+        font-size: 14px;
+    }
+
+}
+
 a {
     text-decoration: none;
 }
@@ -59,19 +75,38 @@ a {
 
     .topsubnav ul li, 
     footer ul li {
-        display: inline;
-        padding: 0.2em;
+        padding: 0.4em;
+        text-align: center;
     }
 
 .brand {
     font-weight: normal;
-    font-size: 2em;
+    font-size: 3rem;
     color: #fff;
     margin: 0;
+    text-align: center;
 }
 
 footer {
     background-color: #555;
     color: #eeeedd;
-    padding: 0.45em;
+    padding: 0.45rem;
 }
+
+@media only screen and (min-width: 800px) {
+
+    .brand {
+        text-align: left;
+    }
+
+    .topsubnav ul li, 
+    footer ul li {
+        display: inline;
+        text-align: left;
+        padding: 0.2em;
+    }
+
+
+}
+
+
