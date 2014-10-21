@@ -88,6 +88,21 @@ a {
     text-transform: lowercase;
 }
 
+.main {
+    color: #161d0e;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.intro {
+    font-size: 1.2em;
+}
+
+.intro em {
+    font-weight: bold;
+    font-style: normal;
+}
+   
 footer {
     background-color: #555;
     color: #eeeedd;
@@ -107,7 +122,28 @@ footer {
         padding: 0.2em;
     }
 
+    .main {
+        text-align: left;
+    }
+
+    .left {
+        float: left;
+    }
+
+    .right {
+        float: right;
+    }
+
+    .clear:after {
+        content: " ";
+        visibility: hidden;
+        display: block;
+        height: 0;
+        clear: both;
+    }
+
 
 }
+
 
 
