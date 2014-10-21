@@ -85,6 +85,7 @@ a {
     color: #fff;
     margin: 0;
     text-align: center;
+    text-transform: lowercase;
 }
 
 footer {
