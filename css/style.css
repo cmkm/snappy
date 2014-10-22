@@ -31,6 +31,7 @@ body {
     font-size: 18px;
     margin: 0 auto;
     background-color: #eeeedd;
+    -webkit-font-smoothing: antialiased;
 }
 
 @media (max-width: 800px) {
@@ -58,14 +59,14 @@ a {
     color: #eee;
     padding: 0.3em;
     position: relative;
-    text-align: right;
+    text-align: center;
 }
 
     .topnav a {
         color: #fff;
         display: inline-block;
-        margin-left: 0.6em;
-        margin-right: 0.2em;
+        margin-left: 1rem;
+        margin-right: 0.2rem;
     }
 
         .topnav a:hover span {
@@ -75,7 +76,7 @@ a {
     .topnav a span {
         display: block;
         text-align: center;
-        font-size: 2em;
+        font-size: 5rem;
         color: #b3cd98;
     }
 
@@ -96,7 +97,8 @@ a {
 
     .topsubnav ul li, 
     footer ul li {
-        padding: 0.4em;
+        padding: 0.6em;
+        font-size: 1.5em;
         text-align: center;
     }
 
@@ -111,11 +113,9 @@ a {
     margin: 0;
     text-align: center;
     text-transform: lowercase;
-    position: absolute;
-    left: 0.2rem;
 }
 
-.main {
+.pagebody {
     color: #161d0e;
     padding: 0.5rem;
     text-align: center;
@@ -140,6 +140,16 @@ footer {
 
     .brand {
         text-align: left;
+        position: absolute;
+        left: 0.2rem;
+    }
+
+    .topnav {
+        text-align: right;
+    }
+
+    .topnav a span {
+        font-size: 2rem;
     }
 
     .topsubnav ul li, 
@@ -147,9 +157,10 @@ footer {
         display: inline;
         text-align: left;
         padding: 0.2em;
+        font-size: 1em;
     }
 
-    .main {
+    .pagebody {
         text-align: left;
     }
 
@@ -173,4 +184,9 @@ footer {
 }
 
 
+/* timeline */
 
+.cbp_tmtimeline:before {
+    background: #ddd;
+
+}
