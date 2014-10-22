@@ -57,13 +57,34 @@ a {
     background-color: #779922;
     color: #eee;
     padding: 0.3em;
+    position: relative;
+    text-align: right;
 }
+
+    .topnav a {
+        color: #fff;
+        display: inline-block;
+        margin-left: 0.6em;
+        margin-right: 0.2em;
+    }
+
+        .topnav a:hover span {
+            color: inherit;
+        }
+
+    .topnav a span {
+        display: block;
+        text-align: center;
+        font-size: 2em;
+        color: #b3cd98;
+    }
 
 .topsubnav {
     background-color: #b3cd98;
     font-size: 0.9em;
     color: #161d0e;
     padding: 0.45em;
+    text-align: right;
 }
 
     .topsubnav ul,
@@ -79,6 +100,10 @@ a {
         text-align: center;
     }
 
+    .topsubnav a {
+        color: inherit;
+    }
+
 .brand {
     font-weight: normal;
     font-size: 3rem;
@@ -86,6 +111,8 @@ a {
     margin: 0;
     text-align: center;
     text-transform: lowercase;
+    position: absolute;
+    left: 0.2rem;
 }
 
 .main {
