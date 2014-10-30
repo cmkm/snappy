@@ -16,9 +16,11 @@ MEAN is an acronym for MongoDB, Express, AngularJs and NodeJs. We need to instal
 Running the mean apps requires that their dependencies are installed, then executed using grunt.
 
 ```bash
+// Install global dependencies
  > npm install -g mean-cli       // Get the mean cmdline (if you like)
  > npm install -g grunt-cli      // Install grunt command line
 
+// Setup and run individual web app
  > cd snappy-web-app
  > npm install       			// Install dependencies locally
  > grunt                        // Launch mean app
