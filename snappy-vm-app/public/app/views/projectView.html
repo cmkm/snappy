@@ -1,0 +1,23 @@
+ <div class="container">
+      <div class="panel panel-default" id="projectFormContainer" ng-controller="ProjectController">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{vm.projectName}}</h3>
+        </div>
+        <div class="panel-body">
+          
+            
+            <div class="form-group">
+                <label>Machine Description</label><br/>
+                {{vm.projectDesc}}
+            </div>
+            <div class="form-group">
+              <label>Status</label><br/>
+              {{vm.status}} <img src="images/ajax-loader.gif"/>
+            </div>
+            <div class="form-group">
+                <label>Server Address</label><br/>
+                <a href="http://{{vm.ip}}:80/" target="_blank">{{vm.ip}}:80</a>
+            </div>
+        </div>
+      </div>
+    </div><!-- /.container -->

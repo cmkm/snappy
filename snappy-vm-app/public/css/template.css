@@ -1,0 +1,8 @@
+body {
+  padding-top: 60px;
+}
+
+.input-group-addon {
+    min-width:200px;
+    text-align:left;
+}

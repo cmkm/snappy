@@ -1,0 +1,52 @@
+ <div class="container">
+      <div class="panel panel-default" id="projectFormContainer" ng-controller="SnappyVMController">
+        <div class="panel-heading">
+          <h3 class="panel-title">Create a Virtual Machine!</h3>
+        </div>
+        <div class="panel-body">
+          <form ng-submit="submitCreateProjectForm()">
+            <div class="form-group">
+              <label for="projectName">Machine Name</label>
+              <input type="text" class="form-control" ng-model="projectName" name="projectName" placeholder="Machine Name">
+            </div>
+            <div class="form-group">
+                <label for="projectDescription">Machine Description</label>
+                <input type="text" class="form-control" ng-model="projectDescription" name="projectDescription" placeholder="Machine Description">
+            </div>
+            
+            <div class="form-group">
+              <label>Choose Application Service</label><br>
+              <label ng-repeat="service in services['as']">
+                <input type="radio" name="projectAS" ng-value="service.id" /> {{service.name}} <br>
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label>Choose Database</label><br>
+              <label ng-repeat="service in services['db']">
+                <input type="radio" name="projectDB" ng-value="service.id" /> {{service.name}} <br>
+              </label>
+            </div>
+            
+            
+            <div class="form-group">
+              <label>Additional Language Support</label><br>
+              <label ng-repeat="service in services['lang']">
+                <input type="checkbox" name="projectLang" ng-value="service.id" /> {{service.name}} <br>
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label>Other</label><br>
+              <label ng-repeat="service in services['other']">
+                <input type="checkbox" name="projectOther" ng-value="service.id" /> {{service.name}} <br>
+              </label>
+            </div>
+            
+            
+            
+            <button class="btn btn-primary" type="submit">Create Machine!</button>
+          </form>
+        </div>
+      </div>
+    </div><!-- /.container -->
