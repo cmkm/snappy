@@ -1,0 +1,7 @@
+# Created by .gitignore support plugin (hsz.mobi)
+snappy-web-app/.bower-cache
+snappy-web-app/.bower-registry
+snappy-web-app/.bower-tmp
+snappy-web-app/node_modules
+snappy-web-app/test
+snappy-web-app/bower_components

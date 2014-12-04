@@ -2,6 +2,7 @@
 
 var crypto = require('crypto');
 
+
 /**
  * Create a random hex string of specific length and
  * @todo consider taking out to a common unit testing javascript helper
@@ -19,8 +20,8 @@ function getRandomString(len) {
  */
 var should = require('should'),
   mongoose = require('mongoose'),
-  User = mongoose.model('User');
-
+  User = mongoose.model('User'),
+  Indexes = mongoose.model('Indexes');
 /**
  * Globals
  */
@@ -34,19 +35,13 @@ describe('<Unit Test>', function() {
 
     before(function(done) {
       user1 = {
-        name: 'Full name',
+        username: 'Fullname',
         email: 'test' + getRandomString() + '@test.com',
-        username: getRandomString(),
-        password: 'password',
-        provider: 'local'
       };
 
       user2 = {
-        name: 'Full name',
+        username: 'Fullname2',
         email: 'test' + getRandomString() + '@test.com',
-        username: getRandomString(),
-        password: 'password',
-        provider: 'local'
       };
 
       done();
@@ -70,325 +65,229 @@ describe('<Unit Test>', function() {
       });
 
       it('should be able to save without problems', function(done) {
-
-        var _user = new User(user1);
-        _user.save(function(err) {
-          should.not.exist(err);
-          _user.remove();
-          done();
-        });
-
-      });
-
-      it('should check that roles are assigned and created properly', function(done) {
-
-        var _user = new User(user1);
-        _user.save(function(err) {
-          should.not.exist(err);
-
-          // the user1 object and users in general are created with only the 'authenticated' role
-          _user.hasRole('authenticated').should.equal(true);
-          _user.hasRole('admin').should.equal(false);
-          _user.isAdmin().should.equal(false);
-          _user.roles.should.have.length(1);
-          _user.remove(function(err) {
+        Indexes.findOneAndUpdate({name: 'users'}, {$inc: {index: 1}}, {upsert: true}, function (err, doc) {
+          var _user = new User({id: doc.index, username: user1.username, email: user1.email});
+          _user.save(function (err) {
+            should.not.exist(err);
+            _user.remove();
             done();
           });
-        });
-
-      });
-
-      it('should confirm that password is hashed correctly', function(done) {
-
-        var _user = new User(user1);
-
-        _user.save(function(err) {
-          should.not.exist(err);
-          _user.hashed_password.should.not.have.length(0);
-          _user.salt.should.not.have.length(0);
-          _user.authenticate(user1.password).should.equal(true);
-          _user.remove(function(err) {
-            done();
-          });
-
         });
       });
 
       it('should be able to create user and save user for updates without problems', function(done) {
-
-        var _user = new User(user1);
-        _user.save(function(err) {
-          should.not.exist(err);
-
-          _user.name = 'Full name2';
+        Indexes.findOneAndUpdate({name: 'users'}, {$inc: {index: 1}}, {upsert: true}, function (err, doc) {
+          var _user = new User(user1);
+          _user.id = doc.index;
           _user.save(function(err) {
             should.not.exist(err);
-            _user.name.should.equal('Full name2');
-            _user.remove(function() {
-              done();
-            });
-          });
 
-        });
-
-      });
-
-      it('should fail to save an existing user with the same values', function(done) {
-
-        var _user1 = new User(user1);
-        _user1.save();
-
-        var _user2 = new User(user1);
-
-        return _user2.save(function(err) {
-          should.exist(err);
-          _user1.remove(function() {
-
-            if (!err) {
-              _user2.remove(function() {
+            _user.name = 'Full name2';
+            _user.save(function(err) {
+              should.not.exist(err);
+              _user.name.should.equal('Full name2');
+              _user.remove(function() {
                 done();
               });
-            }
-
-            done();
+            });
 
           });
-
         });
       });
 
       it('should show an error when try to save without name', function(done) {
+        Indexes.findOneAndUpdate({name: 'users'}, {$inc: {index: 1}}, {upsert: true}, function (err, doc) {
+          var _user = new User(user1);
+          _user.id = doc.index;
+          _user.name = '';
 
-        var _user = new User(user1);
-        _user.name = '';
-
-        return _user.save(function(err) {
-          should.exist(err);
-          done();
-        });
-      });
-
-      it('should show an error when try to save without username', function(done) {
-
-        var _user = new User(user1);
-        _user.username = '';
-
-        return _user.save(function(err) {
-          should.exist(err);
-          done();
-        });
-      });
-
-      it('should show an error when try to save without password and provider set to local', function(done) {
-
-        var _user = new User(user1);
-        _user.password = '';
-        _user.provider = 'local';
-
-        return _user.save(function(err) {
-          should.exist(err);
-          done();
-        });
-      });
-
-      it('should be able to to save without password and provider set to twitter', function(done) {
-
-        var _user = new User(user1);
-
-        _user.password = '';
-        _user.provider = 'twitter';
-
-        return _user.save(function(err) {
-          _user.remove(function() {
-            should.not.exist(err);
-            _user.provider.should.equal('twitter');
-            _user.hashed_password.should.have.length(0);
+          return _user.save(function (err) {
+            should.exist(err);
             done();
           });
         });
       });
-
     });
 
-    // source: http://en.wikipedia.org/wiki/Email_address
-    describe('Test Email Validations', function() {
-      it('Shouldnt allow invalid emails #1', function(done) {
-        var _user = new User(user1);
-        _user.email = 'Abc.example.com';
-        _user.save(function(err) {
-          if (!err) {
-            _user.remove(function() {
-              should.exist(err);
-              done();
-            });
-          } else {
-            should.exist(err);
-            done();
-          }
-        });
-      });
-
-      it('Shouldnt allow invalid emails #2', function(done) {
-        var _user = new User(user1);
-        _user.email = 'A@b@c@example.com';
-        _user.save(function(err) {
-          if (err) {
-            should.exist(err);
-            done();
-          } else {
-            _user.remove(function(err2) {
-              should.exist(err);
-              done();
-            });
-          }
-        });
-      });
-
-      it('Shouldnt allow invalid emails #3', function(done) {
-        var _user = new User(user1);
-        _user.email = 'a"b(c)d,e:f;g<h>i[j\\k]l@example.com';
-        _user.save(function(err) {
-          if (!err) {
-            _user.remove(function() {
-              should.exist(err);
-              done();
-            });
-          } else {
-            should.exist(err);
-            done();
-          }
-        });
-      });
-
-      it('Shouldnt allow invalid emails #4', function(done) {
-        var _user = new User(user1);
-        _user.email = 'just"not"right@example.com';
-        _user.save(function(err) {
-          if (!err) {
-            _user.remove(function() {
-              should.exist(err);
-              done();
-            });
-          } else {
-            should.exist(err);
-            done();
-          }
-        });
-      });
-
-      it('Shouldnt allow invalid emails #5', function(done) {
-        var _user = new User(user1);
-        _user.email = 'this is"not\\allowed@example.com';
-        _user.save(function(err) {
-          if (!err) {
-            _user.remove(function() {
-              should.exist(err);
-              done();
-            });
-          } else {
-            should.exist(err);
-            done();
-          }
-        });
-      });
-
-      it('Shouldnt allow invalid emails #6', function(done) {
-        var _user = new User(user1);
-        _user.email = 'this\\ still\\"not\\allowed@example.com';
-        _user.save(function(err) {
-          if (!err) {
-            _user.remove(function() {
-              should.exist(err);
-              done();
-            });
-          } else {
-            should.exist(err);
-            done();
-          }
-        });
-      });
-
-      it('Shouldnt allow invalid emails #7', function(done) {
-        var _user = new User(user1);
-        _user.email = 'john..doe@example.com';
-        _user.save(function(err) {
-          if (!err) {
-            _user.remove(function() {
-              should.exist(err);
-              done();
-            });
-          } else {
-            should.exist(err);
-            done();
-          }
-        });
-      });
-
-      it('Shouldnt allow invalid emails #8', function(done) {
-        var _user = new User(user1);
-        _user.email = 'john.doe@example..com';
-        _user.save(function(err) {
-          if (!err) {
-            _user.remove(function() {
-              should.exist(err);
-              done();
-            });
-          } else {
-            should.exist(err);
-            done();
-          }
-        });
-      });
-
-      it('Should save with valid email #1', function(done) {
-        var _user = new User(user1);
-        _user.email = 'john.doe@example.com';
-        _user.save(function(err) {
-          if (!err) {
-            _user.remove(function() {
-              should.not.exist(err);
-              done();
-            });
-          } else {
-            should.not.exist(err);
-            done();
-          }
-        });
-      });
-
-      it('Should save with valid email #2', function(done) {
-        var _user = new User(user1);
-        _user.email = 'disposable.style.email.with+symbol@example.com';
-        _user.save(function(err) {
-          if (!err) {
-            _user.remove(function() {
-              should.not.exist(err);
-              done();
-            });
-          } else {
-            should.not.exist(err);
-            done();
-          }
-        });
-      });
-
-      it('Should save with valid email #3', function(done) {
-        var _user = new User(user1);
-        _user.email = 'other.email-with-dash@example.com';
-        _user.save(function(err) {
-          if (!err) {
-            _user.remove(function() {
-              should.not.exist(err);
-              done();
-            });
-          } else {
-            should.not.exist(err);
-            done();
-          }
-        });
-      });
-
-    });
+    //// source: http://en.wikipedia.org/wiki/Email_address
+    //describe('Test Email Validations', function() {
+    //  it('Shouldnt allow invalid emails #1', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'Abc.example.com';
+    //    _user.save(function(err) {
+    //      if (!err) {
+    //        _user.remove(function() {
+    //          should.exist(err);
+    //          done();
+    //        });
+    //      } else {
+    //        should.exist(err);
+    //        done();
+    //      }
+    //    });
+    //  });
+    //
+    //  it('Shouldnt allow invalid emails #2', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'A@b@c@example.com';
+    //    _user.save(function(err) {
+    //      if (err) {
+    //        should.exist(err);
+    //        done();
+    //      } else {
+    //        _user.remove(function(err2) {
+    //          should.exist(err);
+    //          done();
+    //        });
+    //      }
+    //    });
+    //  });
+    //
+    //  it('Shouldnt allow invalid emails #3', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'a"b(c)d,e:f;g<h>i[j\\k]l@example.com';
+    //    _user.save(function(err) {
+    //      if (!err) {
+    //        _user.remove(function() {
+    //          should.exist(err);
+    //          done();
+    //        });
+    //      } else {
+    //        should.exist(err);
+    //        done();
+    //      }
+    //    });
+    //  });
+    //
+    //  it('Shouldnt allow invalid emails #4', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'just"not"right@example.com';
+    //    _user.save(function(err) {
+    //      if (!err) {
+    //        _user.remove(function() {
+    //          should.exist(err);
+    //          done();
+    //        });
+    //      } else {
+    //        should.exist(err);
+    //        done();
+    //      }
+    //    });
+    //  });
+    //
+    //  it('Shouldnt allow invalid emails #5', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'this is"not\\allowed@example.com';
+    //    _user.save(function(err) {
+    //      if (!err) {
+    //        _user.remove(function() {
+    //          should.exist(err);
+    //          done();
+    //        });
+    //      } else {
+    //        should.exist(err);
+    //        done();
+    //      }
+    //    });
+    //  });
+    //
+    //  it('Shouldnt allow invalid emails #6', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'this\\ still\\"not\\allowed@example.com';
+    //    _user.save(function(err) {
+    //      if (!err) {
+    //        _user.remove(function() {
+    //          should.exist(err);
+    //          done();
+    //        });
+    //      } else {
+    //        should.exist(err);
+    //        done();
+    //      }
+    //    });
+    //  });
+    //
+    //  it('Shouldnt allow invalid emails #7', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'john..doe@example.com';
+    //    _user.save(function(err) {
+    //      if (!err) {
+    //        _user.remove(function() {
+    //          should.exist(err);
+    //          done();
+    //        });
+    //      } else {
+    //        should.exist(err);
+    //        done();
+    //      }
+    //    });
+    //  });
+    //
+    //  it('Shouldnt allow invalid emails #8', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'john.doe@example..com';
+    //    _user.save(function(err) {
+    //      if (!err) {
+    //        _user.remove(function() {
+    //          should.exist(err);
+    //          done();
+    //        });
+    //      } else {
+    //        should.exist(err);
+    //        done();
+    //      }
+    //    });
+    //  });
+    //
+    //  it('Should save with valid email #1', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'john.doe@example.com';
+    //    _user.save(function(err) {
+    //      if (!err) {
+    //        _user.remove(function() {
+    //          should.not.exist(err);
+    //          done();
+    //        });
+    //      } else {
+    //        should.not.exist(err);
+    //        done();
+    //      }
+    //    });
+    //  });
+    //
+    //  it('Should save with valid email #2', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'disposable.style.email.with+symbol@example.com';
+    //    _user.save(function(err) {
+    //      if (!err) {
+    //        _user.remove(function() {
+    //          should.not.exist(err);
+    //          done();
+    //        });
+    //      } else {
+    //        should.not.exist(err);
+    //        done();
+    //      }
+    //    });
+    //  });
+    //
+    //  it('Should save with valid email #3', function(done) {
+    //    var _user = new User(user1);
+    //    _user.email = 'other.email-with-dash@example.com';
+    //    _user.save(function(err) {
+    //      if (!err) {
+    //        _user.remove(function() {
+    //          should.not.exist(err);
+    //          done();
+    //        });
+    //      } else {
+    //        should.not.exist(err);
+    //        done();
+    //      }
+    //    });
+    //  });
+    //
+    //});
 
     after(function(done) {
 

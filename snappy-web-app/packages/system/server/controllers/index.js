@@ -14,20 +14,21 @@ exports.render = function(req, res) {
     });
   }
 
-  function isAdmin() {
-    return req.user && req.user.roles.indexOf('admin') !== -1;
-  }
+  //function isAdmin() {
+  //  return req.user && req.user.roles.indexOf('admin') !== -1;
+  //}
 
   // Send some basic starting info to the view
   res.render('index', {
     user: req.user ? {
       name: req.user.name,
       _id: req.user._id,
-      username: req.user.username,
-      roles: req.user.roles
+      //username: req.user.username,
+      //roles: req.user.roles
     } : {},
-    modules: modules,
-    isAdmin: isAdmin,
-    adminEnabled: isAdmin() && mean.moduleEnabled('mean-admin')
+    modules: modules
+    //,
+    //isAdmin: isAdmin,
+    //adminEnabled: isAdmin() && mean.moduleEnabled('mean-admin')
   });
 };

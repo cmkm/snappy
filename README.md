@@ -25,4 +25,3 @@ Running the mean apps requires that their dependencies are installed, then execu
  > npm install       			// Install dependencies locally
  > grunt                        // Launch mean app
 ```
-
