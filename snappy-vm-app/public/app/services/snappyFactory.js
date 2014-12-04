@@ -6,6 +6,10 @@
 
         var factory = {};
 
+        factory.postCreateProject = function(name, desc) {
+          return $http.post('/createProject', {projectName: name, projectDesc: desc}, {});    
+        };
+      
         factory.getServiceCategories = function() {
             return $http.get('/serviceCategories');
         };
@@ -20,6 +24,10 @@
 
         factory.getServicesByCategory = function(catId) {
             return $http.get('/services/'+catId);
+        };
+      
+        factory.getProjectVM = function(projID) {
+            return $http.get('/projects/'+projID);
         };
         
         return factory;

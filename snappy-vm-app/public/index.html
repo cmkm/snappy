@@ -38,58 +38,7 @@
       </div>
     </nav>
 
-    <div class="container">
-      <div class="panel panel-default" id="projectFormContainer" ng-controller="SnappyVMController">
-        <div class="panel-heading">
-          <h3 class="panel-title">Create a Project</h3>
-        </div>
-        <div class="panel-body">
-          <form>
-            <div class="form-group">
-              <label for="projectName">Project Name</label>
-              <input type="email" class="form-control" id="projectName" placeholder="Project Name">
-            </div>
-            <div class="form-group">
-                <label for="projectDescription">Project Description</label>
-                <input type="text" class="form-control" id="projectDescription" placeholder="Project Description">
-            </div>
-            
-            <div class="form-group">
-              <label>Choose Application Service</label><br>
-              <label ng-repeat="service in services['as']">
-                <input type="radio" name="projectAS" ng-value="service.id" /> {{service.name}} <br>
-              </label>
-            </div>
-            
-            <div class="form-group">
-              <label>Choose Database</label><br>
-              <label ng-repeat="service in services['db']">
-                <input type="radio" name="projectDB" ng-value="service.id" /> {{service.name}} <br>
-              </label>
-            </div>
-            
-            
-            <div class="form-group">
-              <label>Additional Language Support</label><br>
-              <label ng-repeat="service in services['lang']">
-                <input type="checkbox" name="projectLang" ng-value="service.id" /> {{service.name}} <br>
-              </label>
-            </div>
-            
-            <div class="form-group">
-              <label>Other</label><br>
-              <label ng-repeat="service in services['other']">
-                <input type="checkbox" name="projectOther" ng-value="service.id" /> {{service.name}} <br>
-              </label>
-            </div>
-            
-            
-            
-            <button type="submit" class="btn btn-primary">Create Project!</button>
-          </form>
-        </div>
-      </div>
-    </div><!-- /.container -->
+   <div ng-view></div>
 
 
     <!-- Bootstrap core JavaScript
@@ -105,5 +54,20 @@
     <script src="app/app.js"></script>
     <script src="app/services/snappyFactory.js"></script>
     <script src="app/controllers/snappyVMController.js"></script>
+    <script src="app/controllers/projectController.js"></script>
+    
+    <script>
+    
+      var postCreateProjectForm = function() {
+        $.post( "/createProject", $("#createProjectForm").serialize(), function( data ) {
+          console.log(data);
+          
+          $location.path('projects/'+data.id);
+        }); 
+        
+        return false;
+      }
+      
+    </script>
   </body>
 </html>

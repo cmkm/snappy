@@ -1,11 +1,27 @@
 (function() {
 
-    var SnappyVMController = function($scope, snappyFactory, $routeParams) {
+    var SnappyVMController = function($scope, snappyFactory, $routeParams, $location) {
 
         $scope.serviceCategories = [];
         $scope.services = {};
         
+        $scope.vm = {};
+      
         function init() {
+          
+            $scope.submitCreateProjectForm = function() {
+              
+              snappyFactory.postCreateProject($scope.projectName, $scope.projectDescription)
+                .success(function(dataFromServer, status, headers, config) {
+                  console.log(dataFromServer);
+                  $scope.vm = dataFromServer;
+                  $location.path('/projects/'+dataFromServer.id);
+                
+                  
+                });
+              
+            };
+          
           
             // Load service categories into serviceCategories array
             snappyFactory.getServiceCategories()
@@ -39,7 +55,7 @@
     };
 
     // Parameter injection to avoid trouble from minification
-    SnappyVMController.$inject = ['$scope', 'snappyFactory', '$routeParams'];
+    SnappyVMController.$inject = ['$scope', 'snappyFactory', '$routeParams', '$location'];
 
     angular.module('snappyVMApp')
         .controller('SnappyVMController', SnappyVMController);

@@ -3,22 +3,18 @@
 
     angular.module('snappyVMApp', ['ngRoute', 'ngAnimate'])
 
-//        .config(function ($routeProvider) {
-//            $routeProvider
-//                .when('/:blogCat/:blogID', {
-//                    controller: 'BlogsController',
-//                    templateUrl: 'app/views/blogView.html'
-//                })
-//                .when('/:blogCat', {
-//                    controller: 'BlogsController',
-//                    templateUrl: 'app/views/blogView.html'
-//                })
-//                .when('/', {
-//                    controller: 'BlogsController',
-//                    templateUrl: 'app/views/blogView.html'
-//                })
-//                .otherwise( { redirectTo: '/' });
-//        });
+        .config(function ($routeProvider) {
+            $routeProvider
+                .when('/projects/:projID', {
+                    controller: 'ProjectController',
+                    templateUrl: 'app/views/projectView.html'
+                })
+                .when('/', {
+                    controller: 'SnappyVMController',
+                    templateUrl: 'app/views/createProject.html'
+                })
+                .otherwise( { redirectTo: '/' });
+        });
 
 
 }());
